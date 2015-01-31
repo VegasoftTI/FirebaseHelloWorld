@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts
+{
+    <script src="https://cdn.firebase.com/js/client/2.1.2/firebase.js"></script>
+    <script type="text/javascript">
+        var db = new Firebase("https://glaring-heat-5676.firebaseio.com/");
+
+        db.child('PrimeiroContato').set({
+            Titulo: "Hello World!",
+            author: "Saia da caixinha",
+            Id: 1,
+        });
+    </script>
+    
+<script type="text/javascript">
+
+    db.on("child_added", function (snapshot) {
+        var enviado = snapshot.val();
+        alert(enviado.Titulo);
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
+</script>
+
+}
