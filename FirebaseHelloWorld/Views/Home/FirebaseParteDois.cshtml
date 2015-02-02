@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts
+{
+    <script src="https://cdn.firebase.com/js/client/2.1.2/firebase.js"></script>
+    <script type="text/javascript">
+        var db = new Firebase("https://saindodacaixinha.firebaseio.com/");
+
+        // Adicionando usuarios
+        var users = db.child("Usuarios");
+        users.set({
+            alguem: {
+                Nome: "Alguem parecido com vc",
+                Endereco: "Alameda do Tupinamba, 132"
+            },
+            joao: {
+                Nome: "Joao da Silva",
+                Endereco: 'R. Batista, 230'
+            }
+        });
+
+        // Substituindo o usuario Alguem por um novo usuario alguem
+        var userAlguem = db.child("Usuarios/alguem");
+        userAlguem.set({
+            Nome: "Alguem da Silva",
+            Endereco: "Av. Paulista, 1439, 8 andar"
+        });
+
+        // Adicionando o objeto premiso ao usuario alguem
+        var premiosDeAlguem = db.child("Usuarios/alguem");
+        premiosDeAlguem.update({
+            Premios: {
+                Premio: "Mamae feliz",
+                Data: "1900 e guarana com rolha e açucar mascavo"
+            }
+        });
+
+        // Adicionando comentarios para o usuario alguem
+        var comentariosDeAlguem = db.child("Usuarios/alguem/comentarios");
+        var comentarioRef = comentariosDeAlguem.push({
+            Comentario: "Estou começando a achar esse firebase legal, vou convencer ao pessoal da equipe que isso vale a pena",
+            Post: "Utilizando Firebase no DotNet – Parte 2"
+        });
+
+        // Exibindo o id do comentario
+        var idGeradoPeloFirebase = comentarioRef.key();
+        alert(idGeradoPeloFirebase);
+    </script>
+
+   
+}
+

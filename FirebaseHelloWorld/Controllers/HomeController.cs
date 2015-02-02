@@ -8,14 +8,13 @@ namespace FirebaseHelloWorld.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult FirebaseParteUm()
         {
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult FirebaseParteDois()
         {
-            ViewBag.Message = "Your application description page.";
 
             return View();
         }
