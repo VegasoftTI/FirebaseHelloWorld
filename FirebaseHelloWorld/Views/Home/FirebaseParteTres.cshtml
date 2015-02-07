@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section scripts
+{
+    <!-- Exemplos utilizando JQuery -->
+
+    <script src="https://cdn.firebase.com/js/client/2.1.2/firebase.js"></script>
+
+    <!-- Value -->
+    <script type="text/javascript">
+        var db = new Firebase("https://saindodacaixinha.firebaseio.com/");
+        var refUsuarios = db.child('Usuarios');
+
+        // Update para garantir esse teste funcionar
+        db.child('Usuarios/alguem').update({ Nome: 'Alguem Da Silva' });
+
+        refUsuarios.on("value", function (snapshot) {
+
+
+            var usuarios = snapshot.val();
+            var conteudo = '<ul>';
+            $.each(usuarios, function (index, item) {
+                conteudo += '<li>' + item.Nome + "</li>";
+
+            });
+            conteudo += "</ul>";
+
+            $('#divUsuariosValue').append(conteudo);
+
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+
+        function updateNome() {
+            db.child('Usuarios/alguem').update({ Nome: 'Alguem Tiranossauro' });
+
+        }
+
+    </script>
+
+    <!-- child_added -->
+    <script type="text/javascript">
+        var refUsuarios = db.child('Usuarios');
+
+        // Remove para garantir que esse teste funcione
+        db.child('Usuarios/ze').remove();
+
+        refUsuarios.on("child_added", function (snapshot) {
+
+            var novoUsuarios = snapshot.val();
+            var conteudo = '<li>' + novoUsuarios.Nome + "</li>";
+
+            $('#usuariosAdded').append(conteudo);
+
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+
+        function insertNovoUsuario() {
+            refUsuarios.child('ze').set({ Nome: 'Ze America', Endereco: "Castelo de Grayskull, 315" });
+        }
+
+    </script>
+
+    <!-- child_changed -->
+    <script type="text/javascript">
+        var refUsuarios = db.child('Usuarios');
+
+        refUsuarios.on("child_changed", function (snapshot) {
+
+            var usuarioModificado = snapshot.val();
+            var conteudo = '<li>' + usuarioModificado.Nome + "</li>";
+
+            $('#usuariosChanged').append(conteudo);
+
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+    </script>
+
+    <!-- child_removed -->
+    <script type="text/javascript">
+        var refUsuarios = db.child('Usuarios');
+
+        refUsuarios.on("child_removed", function (snapshot) {
+
+            var usuarioRemovido = snapshot.val();
+            var conteudo = '<li>' + usuarioRemovido.Nome + "</li>";
+
+            $('#usuariosRemoved').append(conteudo);
+
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+
+        function removerUsuario() {
+            db.child('Usuarios/ze').remove();
+        }
+    </script>
+
+
+
+
+
+}
+
+<div class="row">
+    <h2>child_added</h2>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <h4>Usuarios</h4>
+        <div>
+            <ul id="usuariosAdded"></ul>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-5">
+        <h4>Efetuando testes</h4>
+        Inserir o usuario Zé <button class="btn btn-primary" onclick="insertNovoUsuario()">Insert</button>
+    </div>
+</div>
+
+
+<div class="row">
+    <h2>child_changed</h2>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <h4>Usuarios</h4>
+        <div>
+            <ul id="usuariosChanged"></ul>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-5">
+        <h4>Efetuando testes</h4>
+        Atualizar o nome do usuario alguém <button class="btn btn-primary" onclick="updateNome()">Atualizar</button>
+    </div>
+</div>
+
+
+<div class="row">
+    <h2>child_removed</h2>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <h4>Usuarios</h4>
+        <div>
+            <ul id="usuariosRemoved"></ul>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-5">
+        <h4>Efetuando testes</h4>
+        Remover o usuario ze<button class="btn btn-primary" onclick="removerUsuario()">Remove</button>
+    </div>
+</div>
+
+
+<div class="row">
+    <h2>value</h2>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <h4>Usuarios</h4>
+        <div id="divUsuariosValue">
+
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-5">
+        <h4>Efetuando testes</h4>
+        Atualizar o nome do usuario alguém <button class="btn btn-primary" onclick="updateNome()">Atualizar</button>
+    </div>
+</div>
+

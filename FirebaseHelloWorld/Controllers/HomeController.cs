@@ -19,7 +19,7 @@ namespace FirebaseHelloWorld.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult FirebaseParteTres()
         {
             ViewBag.Message = "Your contact page.";
 
